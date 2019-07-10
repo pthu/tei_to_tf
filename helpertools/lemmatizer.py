@@ -8,9 +8,6 @@
 # 
 # If you like to use these functions, be aware to load the lemmatizer (=lemma dictionary) only once...
 # 
-# 
-
-# In[1]:
 
 
 import pickle
@@ -23,15 +20,12 @@ import nbimporter
 
 udnorm = 'NFD'
 
-REPO = '~/github/pthu/patristics'
-SRC_DIR = path.expanduser(f'{REPO}/programs/helpertools/data')
+REPO = '~/github/pthu/tei_to_tf/'
+SRC_DIR = path.expanduser(f'{REPO}helpertools/data')
 SOURCE1 = SRC_DIR + '/forms-normalised-20180208_001.txt'
 SOURCE2 = SRC_DIR + '/MorpheusUnicode.xml'
 
 letter = {'L'}
-
-
-# In[2]:
 
 
 MANUAL_FORMS = {
@@ -50,10 +44,6 @@ MANUAL_FORMS = {
     'ἰσαὰκ': 'ἰσαὰκ'
 }
     
-
-
-# In[3]:
-
 
 def strip_accents(word):
     return ''.join(c for c in normalize(udnorm, word.lower())
@@ -145,7 +135,7 @@ def createLemmatizer(sourcepath1, sourcepath2):
     # Handle movable-nu and final-sigma
     lemma_dict_add = {}
     for wordform in lemma_dict:
-        if wordform.endswith(('εν', 'σιν', 'στιν')):
+        if strip_accents(wordform).endswith(('εν', 'σιν', 'στιν')) and len(strip_accents(wordform)) > 2:
             if wordform[:-1] in lemma_dict:
                 pass
             else:
@@ -161,11 +151,7 @@ def createLemmatizer(sourcepath1, sourcepath2):
         pickle.dump(lemma_dict, lemmatizer, protocol=pickle.HIGHEST_PROTOCOL)
     
 # Run the creation process    
-# createLemmatizer(SOURCE1, SOURCE2)
-
-
-# In[4]:
-
+#createLemmatizer(SOURCE1, SOURCE2)
 
 
 def lemmatize(word, lemmatizer):
@@ -177,25 +163,17 @@ def lemmatize(word, lemmatizer):
     return word
         
 
-
-# In[5]:
-
-
 # Small test setup
 
-lemmatizer_open = open(SRC_DIR + '/lemmatizer.pickle', 'rb')
-lemmatizer = pickle.load(lemmatizer_open)
+# lemmatizer_open = open(SRC_DIR + '/lemmatizer.pickle', 'rb')
+# lemmatizer = pickle.load(lemmatizer_open)
 
-selection = {k: v for k, v in sorted(lemmatizer.items())[:100]}
-pprint(selection)
-pprint(f'The total number of available wordforms = {len(lemmatizer)}')
+# selection = {k: v for k, v in sorted(lemmatizer.items())[:100]}
+# pprint(selection)
+# pprint(f'The total number of available wordforms = {len(lemmatizer)}')
 
-lemmatize('ἐΠράχθη', lemmatizer)
-lemmatizer_open.close()
-
-
-# In[ ]:
-
+# lemmatize('ἐΠράχθη', lemmatizer)
+# lemmatizer_open.close()
 
 
 
