@@ -45,15 +45,6 @@ def tokenize(sentence, norm=udnorm):
         (),
     )
 
-# def strip_accents(word):
-#     w_strip = normalize(NFD, word)
-#     stripped_word = 0
-#     for i in range(len(w_strip)):
-#         if category(w_strip[i]) in letter:
-#             stripped_word += i
-#         else:
-#             pass
-#     return stripped_word
 
 def strip_accents(word):
     return ''.join(c for c in normalize('NFD', word.lower())
